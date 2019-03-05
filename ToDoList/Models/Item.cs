@@ -37,6 +37,46 @@ namespace ToDoList.Models
       return _complete;
     }
 
+
+    public void CheckDone(int doneId)
+    {
+
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"UPDATE items SET complete = 1 WHERE id = @doneId;";
+      MySqlParameter done = new MySqlParameter();
+      done.ParameterName = "@doneId";
+      done.Value = doneId;
+      cmd.Parameters.Add(done);
+
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+    public void Delete(int itemId)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM items WHERE id = @ItemId; DELETE FROM categories_items WHERE item_id = @ItemId;";
+      MySqlParameter itemIdParameter = new MySqlParameter();
+      itemIdParameter.ParameterName = "@ItemId";
+      itemIdParameter.Value = itemId;
+      cmd.Parameters.Add(itemIdParameter);
+      cmd.ExecuteNonQuery();
+      if (conn != null)
+      {
+        conn.Close();
+      }
+    }
+
+
+
     public static List<Item> GetAll()
     {
       List<Item> allItems = new List<Item> {};
@@ -236,22 +276,7 @@ namespace ToDoList.Models
        }
      }
 
-     public void Delete()
-     {
-       MySqlConnection conn = DB.Connection();
-       conn.Open();
-       var cmd = conn.CreateCommand() as MySqlCommand;
-       cmd.CommandText = @"DELETE FROM items WHERE id = @ItemId; DELETE FROM categories_items WHERE item_id = @ItemId;";
-       MySqlParameter itemIdParameter = new MySqlParameter();
-       itemIdParameter.ParameterName = "@ItemId";
-       itemIdParameter.Value = this.GetId();
-       cmd.Parameters.Add(itemIdParameter);
-       cmd.ExecuteNonQuery();
-       if (conn != null)
-       {
-         conn.Close();
-       }
-     }
+
 
   }
 }

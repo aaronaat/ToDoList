@@ -39,5 +39,40 @@
   </select>
   <button type='submit'>Add</button>
 </form>
+<br><br>
+
+<h4>Set to done:</h4>
+
+<form action='/categories/@Model["category"].GetId()/items/done' method='post'>
+  <label for='doneId'>Select a item</label>
+  <select id='doneId' name='doneId' type='text'>
+
+    @foreach (var item in @Model["allItems"])
+    {
+      <option value='@item.GetId()'>@item.GetDescription()</option>
+    }
+
+  </select>
+  <button type='submit'>Set</button>
+</form>
+
+<p><a href="/">Return to Main Page</a></p>
+
+<br>
+
+<h4>Delete Items: </h4>
+
+<form action='/categories/@Model["category"].GetId()/items/delete' method='post'>
+  <label for='itemId'>Select a item</label>
+  <select id='itemId' name='itemId' type='text'>
+
+    @foreach (var item in @Model["allItems"])
+    {
+      <option value='@item.GetId()'>@item.GetDescription()</option>
+    }
+
+  </select>
+  <button type='submit'>Delete</button>
+</form>
 
 <p><a href="/">Return to Main Page</a></p>

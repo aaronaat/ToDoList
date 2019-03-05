@@ -52,5 +52,22 @@ namespace ToDoList.Controllers
       return RedirectToAction("Show",  new { id = categoryId });
     }
 
+    [HttpPost("/categories/{categoryId}/items/done")]
+    public ActionResult CheckDone(int categoryId, int doneId)
+    {
+      Category category = Category.Find(categoryId);
+      Item item = Item.Find(doneId);
+      item.CheckDone(doneId);
+      return RedirectToAction("Show", new { id = categoryId} );
+    }
+    [HttpPost("/categories/{categoryId}/items/delete")]
+    public ActionResult Delete(int categoryId, int itemId)
+    {
+      Category category = Category.Find(categoryId);
+      Item item = Item.Find(itemId);
+      item.Delete(itemId);
+      return RedirectToAction("Show", new { id = categoryId });
+
+    }
   }
 }
